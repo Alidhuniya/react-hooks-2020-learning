@@ -1,34 +1,29 @@
 import React, { useState, useEffect, Fragment } from 'react';
 
  const App = () => {
-   const [peoples, setPeoples] = useState ([
-    { id: 1, name: 'john' },
-    { id: 2, name: 'peter' },
-    { id: 3, name: 'susan' },
-    { id: 4, name: 'anna' },
-   ])
+   const [user, setUser] = useState (
+     {
+       name: "Ali Dhuniya",
+       age: 19,
+       message: "random message"
+     }
+   )
 
-   const removePeople = (id) => {
-     let peopleRemoved = peoples.filter((person) => person.id !== id);
-     setPeoples(peopleRemoved);
+   const { name, age, message} = user;
+
+   const handleMessageChange = () => {
+      setUser({...user, message: "Hello World"});
    }
 
   return (
     <Fragment>
-   <h1>Array of Peoples</h1>
-   {
-     peoples.map(people => {
-       const { id, name } = people;
-       return (
-         <div key={id}>
-          <h3>{name}</h3>
-          <button type="button" onClick={() => removePeople(id)}>Clear People</button>
-         </div>
-         
-       )
-     })
-   }
-   <button type="button" onClick={() => setPeoples([])}>Clear All Peoples</button>
+   <h1>Spread Operator - objects with useState</h1>
+   <div>
+     <h1>Name: {name}</h1>
+     <h2>Age: {age}</h2>
+     <h3>Message: {message}</h3>
+   </div>
+   <button onClick = {handleMessageChange} type="button">Change Message</button>
     </Fragment>
 
   );
