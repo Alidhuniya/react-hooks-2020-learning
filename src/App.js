@@ -13,7 +13,9 @@ import React, { useState, useEffect, Fragment } from 'react';
   else {
     document.title = "Count";
   }
- })
+ }, [value] ) // [] this is array dependency and it only runs at initial render, it will not re-render whenever value changed, 
+
+ // [value] if you pass value in dependency array means it only runs when value is changed
 
  console.log("render component");
 
