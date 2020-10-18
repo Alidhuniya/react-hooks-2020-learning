@@ -1,36 +1,39 @@
 import React, { useState, useEffect, Fragment } from 'react';
 
  const App = () => {
- const [value, setValue] = useState(0);
+  const url = 'https://api.github.com/users';
 
- useEffect(() => {
-   console.log("useEffect")
-   console.log(value);
-  //  document.title = `${value}`;
-  if(value >= 1) {
-    document.title = `${value}`;
-  }
-  else {
-    document.title = "Count";
-  }
- }, [value] ) // [] this is array dependency and it only runs at initial render, it will not re-render whenever value changed, 
-
- // [value] if you pass value in dependency array means it only runs when value is changed
-
- console.log("render component");
-
-
-  return (
-    <Fragment>
-   <h3>useEffect Example</h3>
-   <h2>{value}</h2>
-   <div>
-   <button onClick = {() => setValue(value + 1)} type="button">Increase</button>
-   </div>
-   
-    </Fragment>
-
-  );
+    const [users, setUsers] = useState([]);
+  
+    const getUsers = async () => {
+      const response = await fetch(url);
+      const users = await response.json();
+      setUsers(users);
+      // console.log(users);
+    };
+  
+    useEffect(() => {
+      getUsers();
+    }, []);
+    return (
+      <>
+        <h3>github users</h3>
+        <ul>
+          {users.map((user) => {
+            const { id, login, avatar_url, html_url } = user;
+            return (
+              <li key={id}>
+                <img src={avatar_url} alt={login} />
+                <div>
+                  <h4>{login}</h4>
+                  <a href={html_url}>profile</a>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </>
+    );
 }
 
 export default App;
