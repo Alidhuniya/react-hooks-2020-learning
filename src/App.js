@@ -1,37 +1,24 @@
 import React, { useState, useEffect, Fragment } from 'react';
 
- const App = () => {
-  const url = 'https://api.github.com/users';
+ const App = ({text, maxLength}) => {
 
-    const [users, setUsers] = useState([]);
-  
-    const getUsers = async () => {
-      const response = await fetch(url);
-      const users = await response.json();
-      setUsers(users);
-      // console.log(users);
-    };
-  
-    useEffect(() => {
-      getUsers();
-    }, []);
+  const [hidden, setHidden] = useState(true);
+
+  // If the text is short enough, just render it
+  if (text.length <= maxLength) {
+    return <span>{text}</span>;
+  }
+ 
     return (
       <>
-        <h3>github users</h3>
-        <ul>
-          {users.map((user) => {
-            const { id, login, avatar_url, html_url } = user;
-            return (
-              <li key={id}>
-                <img src={avatar_url} alt={login} />
-                <div>
-                  <h4>{login}</h4>
-                  <a href={html_url}>profile</a>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
+       <span>
+      {hidden ? `${text.substr(0, maxLength).trim()} ...` : text}
+      {hidden ? (
+        <a onClick={() => setHidden(false)}> read more</a>
+      ) : (
+        <a onClick={() => setHidden(true)}> read less</a>
+      )}
+    </span>
       </>
     );
 }
