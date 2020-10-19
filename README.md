@@ -4,3 +4,6 @@
 
 ### see branches for different lessons
 
+# article
+#### [show/hide text](https://daveceddia.com/usestate-hook-examples/)
+
