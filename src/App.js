@@ -1,46 +1,27 @@
-import React, { useState } from "react";
-import Todo from "./Todo";
-import TodoForm from "./TodoForm";
- 
-function App() {
-  const [todos, setTodos] = useState([
-    { text: "Learn React Hooks", isCompleted: false },
-    { text: "Take a Drive", isCompleted: false },
-    { text: "Play some games", isCompleted: false }
-  ]);
+import React, { useState, useEffect } from 'react';
 
-  const handleAddTodo = text => {
-    const newToDos = [...todos, { text }];
-    setTodos(newToDos);
-  };
 
-  const handleComplete = index => {
-    const newToDos = [...todos];
-    newToDos[index].isCompleted = true;
-    setTodos(newToDos);
-  };
+const  App = () => {
+  const [count, setCount] = useState(0);
+  const [person, setPerson] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const handleUnfinished = index => {
-    const newToDos = [...todos];
-    newToDos[index].isCompleted = false;
-    setTodos(newToDos);
-  };
+  useEffect(async() => {
+    const ftch = await fetch("https://api.randomuser.me/");
+    const data = await ftch.json();
+    const item = data.results[0]
+    // console.log(item);
+    setPerson(item)
+    setLoading(false);
+  }, [])
 
-  const handleDeleteTodo = index => {
-    const newToDos = [...todos];
-    newToDos.splice(index, 1);
-    setTodos(newToDos);
-  };
- 
   return (
-    <React.Fragment>
-      {todos.map((todo, index) => (
-        <Todo todo={todo} key={index} onComplete={handleComplete}
-          index={index} onUnfinished={handleUnfinished} onDeleteTodo={handleDeleteTodo} />
-      ))}
-      <TodoForm onAddTodo={handleAddTodo} />
-    </React.Fragment>
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+     {loading ? <div>loading</div> : person && <div>{person.name.first}</div>}
+    </div>
   );
 }
- 
+
 export default App;
